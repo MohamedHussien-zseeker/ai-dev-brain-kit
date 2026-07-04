@@ -15,6 +15,7 @@ from brain.commands.review import run_review, stats as review_stats
 
 
 def main(argv: list[str] | None = None) -> int:
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
     parser = argparse.ArgumentParser(
         prog="brain",
         description="AI Dev Brain — local memory system for solo developers",

@@ -17,10 +17,16 @@ Manual download: grab `brain-linux-x86_64` or `brain-windows-x86_64.exe` from [r
 
 ## Initialize a Vault
 
+**Linux/macOS:**
 ```bash
-# Use your existing Obsidian vault
 brain init --vault ~/my-brain
+# Or let brain create a fresh vault in the current directory
+brain init
+```
 
+**Windows (PowerShell):**
+```powershell
+brain init --vault "$env:USERPROFILE\brain-vault"
 # Or let brain create a fresh vault in the current directory
 brain init
 ```
