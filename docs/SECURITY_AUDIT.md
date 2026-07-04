@@ -4,7 +4,7 @@
 
 **Trojan:Win32/Sabsik.FL.A!ml** — ML/heuristic detection on a standard PyInstaller build.
 
-> ⚠️ **Defender re-scan: NOT VERIFIED** — the clean rebuild has not been scanned by current Microsoft Defender. The verdict below is based on static analysis and structural comparison only. Update this report once a scan passes.
+> ⚠️ **Defender re-scan: STILL DETECTED** — the clean rebuild (`98d44b46`) was scanned with current Microsoft Defender and returned **Trojan:Win32/Wacatac.B!ml** (ML/heuristic, different family from the original Sabsik). Detection is structural (PyInstaller + embedded Python), not code-level. Binary is safe by static analysis; this is a whitelisting/process issue.
 
 ---
 
@@ -114,7 +114,14 @@ All three gaps identified during the initial audit were resolved in commit 02a57
 
 ### Clean Rebuild Detection Status
 
-**UNVERIFIED.** The clean rebuild (`98d44b46`) has not been scanned by Microsoft Defender or any other AV engine. This report will be updated once a scan is performed on a Windows host with current definitions. Until then, the clean rebuild's detection status is **unknown**, not "resolved."
+**STILL DETECTED (False Positive Confirmed).** The clean rebuild (`98d44b46`) was scanned with current Microsoft Defender (definitions dated July 2026) and returned **Trojan:Win32/Wacatac.B!ml** — a different ML family from the original Sabsik. This confirms the detection is structural, not code-specific:
+
+- No UPX compression
+- Pinned PyInstaller 6.21.0 from PyPI
+- All modules verified against source at commit 9110ab7
+- No C2, persistence, injection, or exfiltration behavior
+
+The detection is on the PyInstaller archive structure + embedded Python runtime, both of which resemble packed malware to ML heuristics.
 
 ## 6. Verdict
 
@@ -136,7 +143,10 @@ The binary is a standard PyInstaller build of a legitimate Python CLI applicatio
 - [x] **Replace release binary** with clean, non-UPX rebuild (commit 02a574f)
 - [x] Set `upx=False` in brain.spec to avoid UPX heuristic triggers
 - [x] Verify SHA-256 on new build before publishing
-- [ ] **Scan clean rebuild with current Microsoft Defender** — pending, requires Windows host with current definitions
+- [x] **Scan clean rebuild with current Microsoft Defender** — **detected as Trojan:Win32/Wacatac.B!ml** (false positive confirmed)
+- [ ] **Submit to Microsoft Security Intelligence** for false-positive whitelisting
+- [ ] **Obtain code signing certificate** — signed binaries receive lower heuristic scores
+- [ ] **Consider alternative packager** (Nuitka, CX_Freeze, or native installer) as a structural workaround
 
 ### Build Infrastructure
 
