@@ -20,12 +20,15 @@ if [ ! -d "$WINEPREFIX/drive_c/Python312" ]; then
     exit 1
 fi
 
-# Copy source to wine drive
-rm -rf "$WINEPREFIX/drive_c/brain-build/brain"
+# Copy source + build scripts to wine drive
+rm -rf "$WINEPREFIX/drive_c/brain-build"
+mkdir -p "$WINEPREFIX/drive_c/brain-build"
 cp -r "$ROOT/brain" "$WINEPREFIX/drive_c/brain-build/"
+cp "$ROOT/brain.spec" "$WINEPREFIX/drive_c/brain-build/"
+cp "$ROOT/scripts/run_pyinstaller.py" "$WINEPREFIX/drive_c/brain-build/"
 
-# Run PyInstaller
-wine cmd /c "$PYTHON C:\run_pyinstaller.py" 2>&1
+# Run PyInstaller (uses scripts/run_pyinstaller.py)
+wine cmd /c "$PYTHON C:\brain-build\run_pyinstaller.py" 2>&1
 
 # Copy artifacts
 cp "$WINEPREFIX/drive_c/brain-build/dist/brain.exe" "$RELEASES/brain-windows-x86_64.exe"
