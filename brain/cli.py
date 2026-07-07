@@ -12,6 +12,7 @@ from brain.commands.context import build_context, copy_to_clipboard
 from brain.commands.hook import install_hook, uninstall_hook, claude_stop
 from brain.commands.consolidate import run_consolidate
 from brain.commands.review import run_review, stats as review_stats
+from brain.commands.handoff import run_handoff
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -78,6 +79,23 @@ def main(argv: list[str] | None = None) -> int:
     # review stats
     sub.add_parser("review-stats", help="Show review proposal counts")
 
+    # handoff
+    handoff_p = sub.add_parser("handoff", help="Manage per-project HANDOFF.md")
+    handoff_sub = handoff_p.add_subparsers(dest="handoff_command")
+
+    handoff_sub.add_parser("show", help="Display current handoff")
+    handoff_now_p = handoff_sub.add_parser("now", help="Set the current task")
+    handoff_now_p.add_argument("text", type=str, nargs="+", help="Task description")
+    handoff_done_p = handoff_sub.add_parser("done", help="Append a completed item")
+    handoff_done_p.add_argument("text", type=str, nargs="+", help="Completed item description")
+    handoff_next_p = handoff_sub.add_parser("next", help="Set the next step")
+    handoff_next_p.add_argument("text", type=str, nargs="+", help="Next step description")
+    handoff_watch_p = handoff_sub.add_parser("watch", help="Set a known bug or gotcha")
+    handoff_watch_p.add_argument("text", type=str, nargs="+", help="Issue description")
+    handoff_files_p = handoff_sub.add_parser("files", help="Set files in play")
+    handoff_files_p.add_argument("text", type=str, nargs="+", help="File paths")
+    handoff_sub.add_parser("clear", help="Delete HANDOFF.md")
+
     args = parser.parse_args(argv)
 
     if args.version:
@@ -97,6 +115,9 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "hook":
         return _handle_hook(args)
+
+    if args.command == "handoff":
+        return _handle_handoff(args)
 
     if args.command == "context":
         cfg = load_config()
@@ -156,6 +177,15 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     parser.print_help()
+    return 0
+
+
+def _handle_handoff(args: argparse.Namespace) -> int:
+    if not args.handoff_command:
+        args.handoff_command = "show"
+    text = " ".join(getattr(args, "text", "")) if hasattr(args, "text") else ""
+    cfg = load_config()
+    run_handoff(cfg, args.handoff_command, text)
     return 0
 
 
