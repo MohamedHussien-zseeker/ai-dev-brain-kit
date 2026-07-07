@@ -1,24 +1,11 @@
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-dist/
-build/
-*.pyo
+# AI Dev Brain — public distribution repository
 
-# Virtual env
-.venv/
-venv/
+# Release artifacts (auto-generated)
+releases/brain
+releases/nuitka-build/
+releases/brain.spec
+releases/pilot-zip/
 
 # OS files
 .DS_Store
 Thumbs.db
-
-# Editor
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# Config (user-specific, generated at install time)
-.brain/config.json

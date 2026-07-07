@@ -1,30 +1,39 @@
-# AI Dev Brain Kit
+# AI Dev Brain
 
 A local-first memory system for solo developers. Capture notes, log daily
 activity, build session context for AI tools, and consolidate raw captures
 into durable knowledge — all on your own machine.
 
+Handoff between AI sessions with a single command — no more re-explaining
+your project every time you start fresh.
+
 ## Features
 
+- **Session handoff** — `brain handoff now "task"` + `brain handoff show`
+  between sessions. 5 fields, 15 lines max. No context degradation.
 - **Quick capture** — `brain note "remember this"` from anywhere
 - **Daily logs** — `brain today` appends to your daily journal
 - **AI context** — `brain context --clipboard` builds a prompt-ready summary
   of recent activity for your AI coding session
 - **Consolidate & review** — stage inbox items, review interactively, approve
-  or reject — no data leaves your machine unless you opt into LLM help
+  or reject — no data leaves your machine unless you opt in
 - **Claude Code hook** — auto-capture session summaries when Claude stops
 - **Zero telemetry** — no phone-home, no analytics, no accounts
 
-## Requirements
+## Download
 
-- **Linux** (x86_64) or **Windows 10/11** (x86_64)
-- No Python, Node, or runtime dependencies — the binary is self-contained
+Download the latest binary for your platform from the
+[releases page](https://github.com/MohamedHussien-zseeker/ai-dev-brain-kit/releases).
 
-> **Windows status:** Verified on Windows 10/11 via real hardware testing.
-> Known limitations: clipboard integration (`xclip`/`xsel` only; `clip.exe` not wired);
-> cross-compiled from Linux (native Windows build TBD); x86_64 only.
+Verify the SHA-256 checksum before running:
 
-## Installation
+```bash
+sha256sum -c brain-linux-x86_64.sha256
+chmod +x brain-linux-x86_64
+./brain-linux-x86_64 --version
+```
+
+Install scripts (auto-download + PATH setup):
 
 ```bash
 # Linux
@@ -35,31 +44,31 @@ source ~/.bashrc
 powershell -c "Invoke-WebRequest -Uri https://github.com/MohamedHussien-zseeker/ai-dev-brain-kit/releases/latest/download/install.ps1 -OutFile install.ps1; .\install.ps1"
 ```
 
-Or download the binary from [releases](https://github.com/MohamedHussien-zseeker/ai-dev-brain-kit/releases),
-verify the SHA-256 checksum, and place it on your PATH.
-
 Full install details: [docs/QUICKSTART.md](docs/QUICKSTART.md)
 
 ## Quick Start
 
 ```bash
-# Initialize a vault (use your existing Obsidian vault or create fresh)
+# Initialize a vault
 brain init --vault ~/my-brain
 
-# Capture a thought
-brain note "Check the API rate limits before deploying"
+# Set your current task (creates HANDOFF.md)
+brain handoff now "Build login flow"
 
-# Log your day
-brain today
+# At end of session
+brain handoff done "Finished auth middleware"
+brain handoff next "Add tests"
+brain handoff watch "Edge case: null token crashes"
 
-# Build AI session context
-brain context --clipboard
+# Next session — full context in 10 lines
+brain handoff show
 ```
 
-## Core Commands
+## Commands
 
 | Command | Description |
 |---|---|
+| `brain handoff` | Per-project session handoff (now/done/next/watch/files) |
 | `brain init` | Create vault and configuration |
 | `brain note <text>` | Capture a quick note |
 | `brain today` | Daily log entry |
@@ -69,13 +78,13 @@ brain context --clipboard
 | `brain review` | Review proposals interactively |
 | `brain review-stats` | Pending/approved/rejected counts |
 | `brain hook install` | Install Claude Code stop hook |
+| `brain feedback` | Report bugs or share ideas |
 
-## Privacy & Security
+## Privacy
 
 - **Local-first**: all data stays in your vault directory
 - **No telemetry**: brain never phones home
 - **LLM is opt-in**: `--llm` flag required to send content to any provider
-- **API keys**: read from `AI_BRAIN_KEY` env var, never written to disk
 - **SHA-256**: all releases are checksum-verified
 
 See [docs/PRIVACY.md](docs/PRIVACY.md) and [docs/SECURITY.md](docs/SECURITY.md).
@@ -90,15 +99,10 @@ See [docs/PRIVACY.md](docs/PRIVACY.md) and [docs/SECURITY.md](docs/SECURITY.md).
 | [SECURITY.md](docs/SECURITY.md) | Binary integrity, key safety |
 | [REMOTE_INSTALL.md](docs/REMOTE_INSTALL.md) | Remote setup instructions |
 | [UNINSTALL.md](docs/UNINSTALL.md) | How to remove |
+| [CHANGELOG.md](CHANGELOG.md) | Release history |
+| [EULA.md](EULA.md) | Binary software license |
 
-## Status
+## License
 
-**v0.1.0 — Pilot phase**
-
-This project is in active pilot with a limited number of customers.
-New features are on hold until real usage data shapes the roadmap.
-
-## Support
-
-- Open a [GitHub issue](https://github.com/MohamedHussien-zseeker/ai-dev-brain-kit/issues)
-- Pilot customers: contact your setup engineer directly
+The AI Dev Brain binary is distributed under the terms of [EULA.md](EULA.md).
+This repository does not include source code.

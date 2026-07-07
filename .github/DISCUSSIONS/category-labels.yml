@@ -1,0 +1,10 @@
+labels:
+  - name: "idea"
+    color: "C2E0C6"
+    description: "Feature ideas and suggestions"
+  - name: "question"
+    color: "D4C5F9"
+    description: "Questions about usage or setup"
+  - name: "workflow"
+    color: "F9D0C4"
+    description: "Share your brain CLI workflow"

@@ -1,0 +1,62 @@
+---
+name: Bug Report
+description: Report a reproducible bug in the brain CLI
+title: "[Bug] "
+labels: ["bug"]
+assignees: []
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Output of `brain --version`
+      placeholder: "e.g. AI Dev Brain v0.2.0"
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      description: Your operating system and architecture
+      placeholder: "e.g. Linux x86_64, Windows 11 ARM64"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction Steps
+      description: Exact commands or actions that trigger the bug
+      placeholder: |
+        1. Run `brain handoff now "task"`
+        2. Run `brain handoff show`
+        3. See error: ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should have happened
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened (include full error output)
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostic
+    attributes:
+      label: Diagnostic Output
+      description: Output of `brain doctor --offline`
+      render: shell
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Confidentiality
+      description: By submitting, you confirm this report contains no secrets, credentials, or sensitive information.
+      options:
+        - label: I confirm this report contains no secrets or credentials
+          required: true
