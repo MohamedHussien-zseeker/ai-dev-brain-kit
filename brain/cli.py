@@ -204,7 +204,7 @@ def _handle_hook(args: argparse.Namespace) -> int:
 
 
 def _print_version() -> None:
-    print("AI Dev Brain v0.1.0")
+    print("AI Dev Brain v0.2.0")
 
 
 def _read_stdin() -> str:

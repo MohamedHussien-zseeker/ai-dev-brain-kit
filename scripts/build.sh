@@ -21,6 +21,7 @@ pyinstaller --clean \
   --hidden-import brain.commands.doctor \
   --hidden-import brain.commands.hook \
   --hidden-import brain.commands.init \
+  --hidden-import brain.commands.handoff \
   --hidden-import brain.provider \
   --hidden-import brain.config \
   --exclude tkinter \
