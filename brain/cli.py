@@ -13,6 +13,7 @@ from brain.commands.hook import install_hook, uninstall_hook, claude_stop
 from brain.commands.consolidate import run_consolidate
 from brain.commands.review import run_review, stats as review_stats
 from brain.commands.handoff import run_handoff
+from brain.commands.feedback import run_feedback
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -96,6 +97,12 @@ def main(argv: list[str] | None = None) -> int:
     handoff_files_p.add_argument("text", type=str, nargs="+", help="File paths")
     handoff_sub.add_parser("clear", help="Delete HANDOFF.md")
 
+    # feedback
+    feedback_p = sub.add_parser("feedback", help="Links to GitHub Issues and Discussions")
+    feedback_p.add_argument("topic", type=str, nargs="?", default="",
+                            choices=["", "bug", "idea"],
+                            help="'bug' to report a bug, 'idea' for discussions")
+
     args = parser.parse_args(argv)
 
     if args.version:
@@ -118,6 +125,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "handoff":
         return _handle_handoff(args)
+
+    if args.command == "feedback":
+        cfg = load_config()
+        run_feedback(cfg, args.topic)
+        return 0
 
     if args.command == "context":
         cfg = load_config()

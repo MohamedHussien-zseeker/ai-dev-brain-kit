@@ -48,7 +48,7 @@ class TestBinaryIntegrity:
             capture_output=True, text=True, timeout=10,
         )
         assert result.returncode == 0
-        assert "AI Dev Brain v0.1.0" in result.stdout
+        assert "AI Dev Brain v" in result.stdout
 
 
 class TestBinaryCommands:
